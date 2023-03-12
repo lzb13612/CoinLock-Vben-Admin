@@ -37,11 +37,11 @@
 
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
-      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
+      <!-- <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />-->
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
-      <MetaMask />
+      <ConnectWallet />
 
       <AppLocalePicker
         v-if="getShowLocalePicker"
@@ -76,7 +76,7 @@
   import { SettingButtonPositionEnum } from '/@/enums/appEnum';
   import { AppLocalePicker } from '/@/components/Application';
   // UserDropDown,Notify,
-  import { LayoutBreadcrumb, FullScreen, ErrorAction, MetaMask } from './components';
+  import { LayoutBreadcrumb, FullScreen, ErrorAction, ConnectWallet } from './components';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
 
@@ -92,7 +92,7 @@
       LayoutBreadcrumb,
       LayoutMenu,
       // UserDropDown,
-      MetaMask,
+      ConnectWallet,
       AppLocalePicker,
       FullScreen,
       // Notify,

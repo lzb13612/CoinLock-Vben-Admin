@@ -20,9 +20,10 @@ export default {
 
     home: '首页',
 
-    // mate mask
-    connectMetaMask: '连接狐狸钱包',
-    installMetaMask: '安装狐狸钱包插件',
+    // wallet
+    connectWallet: '连接钱包',
+    installWallet: '安装钱包插件',
+    disconnectConnectedWallet: '断开连接钱包',
   },
   multipleTab: {
     reload: '重新加载',

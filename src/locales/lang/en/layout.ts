@@ -20,8 +20,9 @@ export default {
     home: 'Home',
 
     // mate mask
-    connectMetaMask: 'Connect MateMask',
-    installMetaMask: 'Install MetaMask extension',
+    connectWallet: 'Connect Wallet',
+    installWallet: 'Install Wallet extension',
+    disconnectConnectedWallet: 'Disconnect Connected Wallet',
   },
   multipleTab: {
     reload: 'Refresh current',

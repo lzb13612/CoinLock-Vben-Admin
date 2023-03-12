@@ -5,7 +5,7 @@ export const UserDropDown = createAsyncComponent(() => import('./user-dropdown/i
   loading: true,
 });
 
-export const MetaMask = createAsyncComponent(() => import('./meta-mask/MetaMask.vue'));
+export const ConnectWallet = createAsyncComponent(() => import('./wallet/ConnectWallet.vue'));
 
 export const LayoutBreadcrumb = createAsyncComponent(() => import('./Breadcrumb.vue'));
 
