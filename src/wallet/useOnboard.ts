@@ -3,6 +3,7 @@ import { computed, readonly, ref, shallowRef } from 'vue';
 import { useStorage } from '@vueuse/core';
 import { useSubscription } from '@vueuse/rxjs';
 import Web3Onboard from '@web3-onboard/core';
+import { useWalletStoreWithOut } from '/@/store/modules/wallet';
 
 import type {
   ConnectedChain,
@@ -14,9 +15,12 @@ import type {
 } from '@web3-onboard/core';
 import type { AppState } from '@web3-onboard/core/dist/types';
 import type { SetChainOptions } from './types';
+import { Persistent } from '/@/utils/cache/persistent';
+import { ACCOUNTS, WALLET_CONNECT } from '/@/enums/cacheEnum';
 
 // Onboard will be kept here to be reused every time that we access the composable
 let web3Onboard: OnboardAPI | null = null;
+const walletStore = useWalletStoreWithOut();
 const alreadyConnectedWallets = useStorage<string[]>('alreadyConnectedWallets', []);
 const lastConnectionTimestamp = useStorage<number>('lastWalletConnectionTimestamp', 0);
 
@@ -56,6 +60,10 @@ const useOnboard = () => {
     await (web3Onboard as OnboardAPI).connectWallet(options);
     connectingWallet.value = false;
     lastConnectionTimestamp.value = Date.now();
+    walletStore.setAccounts(connectedWallet.value?.accounts as any);
+    walletStore.setLabel(connectedWallet.value?.label as any);
+    // console.log(Persistent.getLocal(ACCOUNTS as any));
+    Persistent.setLocal(WALLET_CONNECT as any, true as any);
   };
 
   const disconnectWallet = async (wallet: DisconnectOptions) => {
@@ -69,6 +77,10 @@ const useOnboard = () => {
     if (connectedWallet.value) {
       await disconnectWallet({ label: connectedWallet.value.label });
     }
+    walletStore.setAccounts([]);
+    walletStore.setLabel('');
+    Persistent.setLocal(WALLET_CONNECT as any, false as any);
+    Persistent.removeLocal(ACCOUNTS as any);
   };
 
   // Chain related functions and variables

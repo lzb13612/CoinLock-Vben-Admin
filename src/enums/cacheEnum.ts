@@ -29,3 +29,6 @@ export enum CacheTypeEnum {
   SESSION,
   LOCAL,
 }
+
+export const ACCOUNTS = 'ACCOUNTS';
+export const WALLET_CONNECT = 'WALLET_CONNECT';
