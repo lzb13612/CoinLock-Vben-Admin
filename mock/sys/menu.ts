@@ -4,37 +4,48 @@ import { createFakeUserList } from './user';
 
 // single
 const dashboardRoute = {
-  path: '/dashboard',
-  name: 'Dashboard',
+  path: '/function',
+  name: 'Function',
   component: 'LAYOUT',
-  redirect: '/dashboard/analysis',
+  redirect: '/function/create',
   meta: {
-    title: 'routes.dashboard.dashboard',
+    title: 'routes.dashboard.function',
     hideChildrenInMenu: true,
     icon: 'bx:bx-home',
   },
   children: [
+    // {
+    //   path: 'analysis',
+    //   name: 'Analysis',
+    //   component: '/function/analysis/index',
+    //   meta: {
+    //     hideMenu: true,
+    //     hideBreadcrumb: true,
+    //     title: 'routes.dashboard.analysis',
+    //     currentActiveMenu: '/function',
+    //     icon: 'bx:bx-home',
+    //   },
+    // },
+    // {
+    //   path: 'workbench',
+    //   name: 'Workbench',
+    //   component: '/function/workbench/index',
+    //   meta: {
+    //     hideMenu: true,
+    //     hideBreadcrumb: true,
+    //     title: 'routes.dashboard.workbench',
+    //     currentActiveMenu: '/function',
+    //     icon: 'bx:bx-home',
+    //   },
     {
-      path: 'analysis',
-      name: 'Analysis',
-      component: '/dashboard/analysis/index',
+      path: 'create',
+      name: 'Create',
+      component: '/function/create/index',
       meta: {
         hideMenu: true,
         hideBreadcrumb: true,
-        title: 'routes.dashboard.analysis',
-        currentActiveMenu: '/dashboard',
-        icon: 'bx:bx-home',
-      },
-    },
-    {
-      path: 'workbench',
-      name: 'Workbench',
-      component: '/dashboard/workbench/index',
-      meta: {
-        hideMenu: true,
-        hideBreadcrumb: true,
-        title: 'routes.dashboard.workbench',
-        currentActiveMenu: '/dashboard',
+        title: 'routes.function.create',
+        currentActiveMenu: '/function',
         icon: 'bx:bx-home',
       },
     },

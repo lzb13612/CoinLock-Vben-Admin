@@ -1,5 +1,5 @@
 export default {
-  dashboard: 'Dashboard',
+  function: 'Function',
   about: 'About',
   workbench: 'Workbench',
   analysis: 'Analysis',
