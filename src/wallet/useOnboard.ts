@@ -17,6 +17,7 @@ import type { AppState } from '@web3-onboard/core/dist/types';
 import type { SetChainOptions } from './types';
 import { Persistent } from '/@/utils/cache/persistent';
 import { ACCOUNTS, WALLET_CONNECT } from '/@/enums/cacheEnum';
+import { getLogin } from '/@/main';
 
 // Onboard will be kept here to be reused every time that we access the composable
 let web3Onboard: OnboardAPI | null = null;
@@ -60,10 +61,16 @@ const useOnboard = () => {
     await (web3Onboard as OnboardAPI).connectWallet(options);
     connectingWallet.value = false;
     lastConnectionTimestamp.value = Date.now();
-    walletStore.setAccounts(connectedWallet.value?.accounts as any);
-    walletStore.setLabel(connectedWallet.value?.label as any);
-    // console.log(Persistent.getLocal(ACCOUNTS as any));
-    Persistent.setLocal(WALLET_CONNECT as any, true as any);
+    if (connectedWallet.value === null) {
+      Persistent.setLocal(WALLET_CONNECT as any, false as any);
+      getLogin.value = Persistent.getLocal(WALLET_CONNECT as any);
+    } else {
+      walletStore.setAccounts(connectedWallet.value?.accounts as any);
+      walletStore.setLabel(connectedWallet.value?.label as any);
+      // console.log(Persistent.getLocal(ACCOUNTS as any));
+      Persistent.setLocal(WALLET_CONNECT as any, true as any);
+      getLogin.value = Persistent.getLocal(WALLET_CONNECT as any);
+    }
   };
 
   const disconnectWallet = async (wallet: DisconnectOptions) => {
@@ -81,6 +88,7 @@ const useOnboard = () => {
     walletStore.setLabel('');
     Persistent.setLocal(WALLET_CONNECT as any, false as any);
     Persistent.removeLocal(ACCOUNTS as any);
+    getLogin.value = Persistent.getLocal(WALLET_CONNECT as any);
   };
 
   // Chain related functions and variables

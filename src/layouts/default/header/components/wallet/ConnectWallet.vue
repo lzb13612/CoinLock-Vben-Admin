@@ -27,29 +27,35 @@
   const { t } = useI18n();
   /* ================================================== */
   import { useOnboard } from '/@/wallet/useOnboard';
-  import { ref } from 'vue';
   import { Persistent } from '/@/utils/cache/persistent';
   import { ACCOUNTS, WALLET_CONNECT } from '/@/enums/cacheEnum';
+  import { getLogin } from '/@/main';
 
-  const { connectWallet, disconnectConnectedWallet } = useOnboard();
   function getAddress() {
-    return (
-      (Persistent.getLocal(ACCOUNTS as any) as any)[0].address.slice(0, 5) +
-      '...' +
-      (Persistent.getLocal(ACCOUNTS as any) as any)[0].address.slice(-4)
-    );
+    if (Persistent.getLocal(WALLET_CONNECT as any)) {
+      return (
+        (Persistent.getLocal(ACCOUNTS as any) as any)[0].address.slice(0, 5) +
+        '...' +
+        (Persistent.getLocal(ACCOUNTS as any) as any)[0].address.slice(-4)
+      );
+    } else {
+      getLogin.value = Persistent.getLocal(WALLET_CONNECT as any);
+    }
   }
-  const getLogin = ref(Persistent.getLocal(WALLET_CONNECT as any));
+
   function connectWallets() {
+    const { connectWallet } = useOnboard();
     connectWallet().then((_) => {
       getLogin.value = Persistent.getLocal(WALLET_CONNECT as any);
     });
   }
   function disconnectConnectedWallets() {
+    const { disconnectConnectedWallet } = useOnboard();
     disconnectConnectedWallet().then((_) => {
       getLogin.value = Persistent.getLocal(WALLET_CONNECT as any);
     });
   }
+
   /* ================================================== */
 </script>
 <style scoped></style>

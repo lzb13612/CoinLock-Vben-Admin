@@ -6,6 +6,8 @@ import {
   Input,
   Layout,
 } from 'ant-design-vue';
+import antd from 'ant-design-vue';
+import DesignForm from 'vue-form-create';
 
 const compList = [AntButton.Group];
 
@@ -14,5 +16,5 @@ export function registerGlobComp(app: App) {
     app.component(comp.name || comp.displayName, comp);
   });
 
-  app.use(Input).use(Button).use(Layout);
+  app.use(Input).use(Button).use(Layout).use(antd).use(DesignForm);
 }

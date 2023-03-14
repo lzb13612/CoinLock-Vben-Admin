@@ -19,6 +19,18 @@ import { registerGlobComp } from '/@/components/registerGlobComp';
 import injectedModule from '@web3-onboard/injected-wallets';
 import walletConnectModule from '@web3-onboard/walletconnect';
 import { init } from '/@/wallet/useOnboard';
+import { Persistent } from '/@/utils/cache/persistent';
+import { ACCOUNTS, WALLET_CONNECT } from '/@/enums/cacheEnum';
+import { useWalletStoreWithOut } from '/@/store/modules/wallet';
+import { ref } from 'vue';
+
+export const getLogin = ref(Persistent.getLocal(WALLET_CONNECT as any));
+
+const walletStore = useWalletStoreWithOut();
+walletStore.setAccounts([]);
+walletStore.setLabel('');
+Persistent.setLocal(WALLET_CONNECT as any, false as any);
+Persistent.removeLocal(ACCOUNTS as any);
 
 const infuraKey = '41af93a3f9504846af0ef1080b980085';
 const injected = injectedModule();
@@ -80,6 +92,7 @@ const onboardOptions = {
 };
 
 init(onboardOptions);
+
 // Wallets===============================================================
 
 // Importing on demand in local development will increase the number of browser requests by around 20%.
