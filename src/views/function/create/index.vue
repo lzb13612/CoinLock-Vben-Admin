@@ -9,6 +9,7 @@
   import AButton from '/@/components/Button/src/BasicButton.vue';
   import { useOnboard } from '/@/wallet/useOnboard';
   import { AntdGenerateForm } from 'vue-form-create';
+  import { deployContract } from '/@/web3/handlerContract'
 
   export default defineComponent({
     components: { AntdGenerateForm, AButton },
@@ -882,26 +883,49 @@
       });
 
       const handleSubmit = () => {
-        (state.generateFormRef as any)
-          .getData()
-          .then(async (data) => {
-            console.log(data);
-            const { connectedWallet, connectWallet } = useOnboard();
-            if (connectedWallet.value !== null) {
-              (window as any).web3 = new Web3((window as any).web3.currentProvider); // data success
-            } else {
-              await connectWallet();
+        (state.generateFormRef as any).getData().then(async (data) => {
+          console.log(data);
+          const { connectedWallet, connectWallet } = useOnboard();
+          if (connectedWallet.value !== null) {
+            (window as any).web3 = new Web3((window as any).web3.givenProvider); // data success
+          } else {
+            // 如果用户没有连接MetaMask, 触发连接弹窗
+            await connectWallet();
+          }
+            // 实例化web3
+            const web3 = (window as any).web3;
+            const accounts = await web3.eth.getAccounts();
+            console.log('账户', accounts[0]);
+            // 模板对应不同的参数
+            switch (data.select_1c6077ce7e14498389715917e95db563) {
+              case "无税通用模板":
+                const constructArgs = [
+                  // string[] => [name, symbol]
+                  [data.input_bf974ebfe34d46a687430e2fcde9f55c, data.input_014350bf3dfd438e86d277cf3f583b40],
+                  // address[] => []
+                  [],
+                  // uint256[] => [decimal, supply]
+                  [data.input_f9bfd276996248c59de4da8bf5d00d58, data.input_56c822ee82554473a637104f7df86030],
+                  // bool[] => []
+                  [],
+                ]
+                // 传参数部署合约
+                deployContract(web3, constructArgs as [string[], string[], number[], boolean[]], accounts[0], 1);
+                break;
+              case "有税回流模板":
+                console.log("有税回流模板");
+                break;
+              case "持币分红模板":
+                console.log("持币分红模板");
+                break;
+              case "加池分红模板":
+                console.log("加池分红模板");
+                break;
             }
-            // const web3 = (window as any).web3;
-            // const accounts = await web3.eth.getAccounts();
-            // console.log('账户', accounts[0]);
-
-            // data 表单数据
-          })
-          .catch((error) => {
-            console.log(error);
-            // data failed
-          });
+          }).catch((error) => {
+              console.log(error);
+              // data failed
+            });
       };
 
       return {
